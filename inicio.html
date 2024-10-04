@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Inicio</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: white;
+            color: #000;
+        }
+        h1 {
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        .logo {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 100px;
+        }
+        .barra-roja {
+            width: 100%;
+            height: 20px;
+            background-color: red;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .botones {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            margin-top: 30px;
+        }
+        button {
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            margin-bottom: 10px;
+            width: 200px;
+            background-color: #28a745;
+            color: white;
+            transition: opacity 0.2s;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        /* Estilos para la ventana emergente */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .close {
+            color: red;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="barra-roja"></div>
+<div class="container">
+    <img src="https://assets-us-01.kc-usercontent.com/6239a81e-8f0f-0040-a1df-b4932a10f6ae/82e279db-22f3-4714-9859-b395bd848835/edwards-OG.png" alt="Logo Edwards" class="logo">
+    <h1>Página de Inicio</h1>
+    
+    <div class="botones">
+        <button id="ordenSplits" onclick="location.href='orden.html'">Orden de Splits</button>
+        <button id="scraps" onclick="abrirModalScrap()">Scraps</button>
+        <button id="procedimientos" onclick="location.href='procedimientos.html'">Procedimientos</button>
+    </div>
+</div>
+
+<!-- Ventana emergente de Scraps -->
+<div id="modalScrap" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="cerrarModalScrap()">&times;</span>
+        <h2>Opciones de Scrap</h2>
+        <button style="background-color: red;" onclick="abrirAsignarScrap()">Asignar Scrap</button>
+        <button style="background-color: hsl(48, 100%, 50%);" onclick="location.href='registros.html'">Registros de Scraps</button>
+    </div>
+</div>
+
+<!-- Ventana emergente para Asignar Scrap -->
+<div id="modalAsignarScrap" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="cerrarModalAsignarScrap()">&times;</span>
+        <h2>Asignar Scrap</h2>
+        <label for="empleado">Empleado:</label>
+        <select id="empleado">
+            <option value="Maryeli">Maryeli</option>
+            <option value="Erick">Erick</option>
+            <option value="Alexander">Alexander</option>
+            <option value="Génesis">Génesis</option>
+            <option value="Isaac">Isaac</option>
+        </select>
+        <br><br>
+        <label for="size">Size:</label>
+        <select id="size">
+            <option value="20">20</option>
+            <option value="23">23</option>
+            <option value="26">26</option>
+            <option value="29">29</option>
+        </select>
+        <br><br>
+        <label for="defecto">Defecto:</label>
+        <input type="text" id="defecto" placeholder="Escribe el defecto">
+        <br><br>
+        <label for="ubicacion">Ubicación:</label>
+        <input type="text" id="ubicacion" placeholder="Escribe la ubicación">
+        <br><br>
+        <button onclick="guardarDatosScrap()">Guardar</button>
+    </div>
+</div>
+
+<script>
+    // Variables para manejar los scraps
+    const scraps = JSON.parse(localStorage.getItem('scraps')) || [];
+
+    function abrirModalScrap() {
+        document.getElementById('modalScrap').style.display = 'block';
+    }
+
+    function cerrarModalScrap() {
+        document.getElementById('modalScrap').style.display = 'none';
+    }
+
+    function abrirAsignarScrap() {
+        document.getElementById('modalScrap').style.display = 'none';
+        document.getElementById('modalAsignarScrap').style.display = 'block';
+    }
+
+    function cerrarModalAsignarScrap() {
+        document.getElementById('modalAsignarScrap').style.display = 'none';
+    }
+
+    function guardarDatosScrap() {
+        const empleado = document.getElementById('empleado').value;
+        const size = document.getElementById('size').value;
+        const defecto = document.getElementById('defecto').value;
+        const ubicacion = document.getElementById('ubicacion').value;
+
+        scraps.push({ empleado, size, defecto, ubicacion });
+        localStorage.setItem('scraps', JSON.stringify(scraps));
+
+        document.getElementById('empleado').value = "";
+        document.getElementById('size').value = "20";
+        document.getElementById('defecto').value = "";
+        document.getElementById('ubicacion').value = "";
+        cerrarModalAsignarScrap();
+
+        alert('Scrap guardado exitosamente!');
+    }
+</script>
+
+</body>
+</html>

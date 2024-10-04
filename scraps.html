@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registros de Scraps</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(to right, #4e54c8, #8f94fb);
+            color: #fff;
+        }
+        h1 {
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        button {
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: 20px;
+            width: 48%;
+            display: inline-block;
+        }
+        button.limpiar {
+            background-color: red;
+            color: black;
+            font-weight: bold;
+        }
+        button.devolver {
+            background-color: blue;
+            color: white;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        #mensaje {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+            color: #ffdd57;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Registros de Scraps</h1>
+
+    <table id="tablaScraps">
+        <thead>
+            <tr>
+                <th>Empleado</th>
+                <th>Size</th>
+                <th>Defecto</th>
+                <th>Ubicación</th>
+            </tr>
+        </thead>
+        <tbody id="tbodyScraps">
+            <!-- Aquí se mostrarán los scraps guardados -->
+        </tbody>
+    </table>
+
+    <button class="limpiar" onclick="limpiarScraps()">Limpiar Registros</button>
+    <button class="devolver" onclick="window.location.href='index.html'">Devolver</button>
+
+    <div id="mensaje"></div>
+</div>
+
+<script>
+    let scraps = [];
+
+    function guardarScrap(empleado, size, defecto, ubicacion) {
+        const scrap = { empleado, size, defecto, ubicacion };
+        scraps.push(scrap);
+        mostrarScraps();
+    }
+
+    function mostrarScraps() {
+        const tbody = document.getElementById('tbodyScraps');
+        tbody.innerHTML = ''; // Limpiar la tabla
+        scraps.forEach((scrap, index) => {
+            const row = `<tr>
+                <td>${scrap.empleado}</td>
+                <td>${scrap.size}</td>
+                <td>${scrap.defecto}</td>
+                <td>${scrap.ubicacion}</td>
+            </tr>`;
+            tbody.innerHTML += row;
+        });
+    }
+
+    function limpiarScraps() {
+        scraps = []; // Limpiar la lista de scraps
+        mostrarScraps(); // Actualizar la tabla
+        document.getElementById('mensaje').innerText = 'Todos los scraps han sido borrados.';
+    }
+
+    // Simular guardado de scraps
+    guardarScrap('Maryeli', 20, 'Defecto 1', 'Ubicación A');
+    guardarScrap('Erick', 23, 'Defecto 2', 'Ubicación B');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asignar Personas a Splits</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: white;
+            color: #000;
+        }
+        h1 {
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            position: relative; /* Añadido para posicionar el logo */
+        }
+        .logo {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 100px; /* Ajusta el tamaño según sea necesario */
+        }
+        .barra-roja {
+            width: 100%;
+            height: 20px; /* Ajusta la altura según sea necesario */
+            background-color: red;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        button {
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: 20px;
+            width: 48%;
+            display: inline-block;
+        }
+        button.ordenar {
+            background-color: #28a745;
+            color: white;
+        }
+        button.limpiar {
+            background-color: red;
+            color: black;
+            font-weight: bold;
+        }
+        button.volver {
+            background-color: blue;
+            color: white;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        #mensaje {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+            color: black; /* Cambiado a negro */
+        }
+    </style>
+</head>
+<body>
+
+<div class="barra-roja"></div> <!-- Barra roja en la parte superior -->
+<div class="container">
+    <img src="https://assets-us-01.kc-usercontent.com/6239a81e-8f0f-0040-a1df-b4932a10f6ae/82e279db-22f3-4714-9859-b395bd848835/edwards-OG.png" alt="Logo Edwards" class="logo"> <!-- Nueva URL del logo -->
+    <h1>Asignar Personas a Splits</h1>
+    
+    <table id="tablaAsignaciones">
+        <thead>
+            <tr>
+                <th>Un+10A+10B</th>
+                <th>10C+20A</th>
+                <th>20B+20C</th>
+                <th>30A+30B</th>
+                <th>30C</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td id="split1"></td>
+                <td id="split2"></td>
+                <td id="split3"></td>
+                <td id="split4"></td>
+                <td id="split5"></td>
+            </tr>
+            <tr>
+                <td id="split1_2"></td>
+                <td id="split2_2"></td>
+                <td id="split3_2"></td>
+                <td id="split4_2"></td>
+                <td id="split5_2"></td>
+            </tr>
+            <tr>
+                <td id="split1_3"></td>
+                <td id="split2_3"></td>
+                <td id="split3_3"></td>
+                <td id="split4_3"></td>
+                <td id="split5_3"></td>
+            </tr>
+            <tr>
+                <td id="split1_4"></td>
+                <td id="split2_4"></td>
+                <td id="split3_4"></td>
+                <td id="split4_4"></td>
+                <td id="split5_4"></td>
+            </tr>
+            <tr>
+                <td id="split1_5"></td>
+                <td id="split2_5"></td>
+                <td id="split3_5"></td>
+                <td id="split4_5"></td>
+                <td id="split5_5"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div id="mensaje"></div>
+    <button class="ordenar" onclick="asignarYOrdenar()">Ordenar</button>
+    <button class="limpiar" onclick="limpiarOrden()">Limpiar</button>
+    <button class="volver" onclick="location.href='inicio.html'">Volver</button>
+</div>
+
+<script>
+    const personas = ["E", "M", "G", "A", "I"];
+
+    function mezclarArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    function asignarYOrdenar() {
+        const asignaciones = mezclarArray([...personas]);
+        for (let i = 0; i < asignaciones.length; i++) {
+            document.getElementById(`split${i + 1}`).innerText = asignaciones[i];
+        }
+
+        const mover = Math.floor(Math.random() * 3) + 1;
+        const lugarTexto = mover === 1 ? 'lugar' : 'lugares'; // Singular o plural
+        document.getElementById('mensaje').innerText = `Mover ${mover} ${lugarTexto}
+        .`; // Mensaje actualizado
+
+        let splits = [
+            document.getElementById('split1').innerText,
+            document.getElementById('split2').innerText,
+            document.getElementById('split3').innerText,
+            document.getElementById('split4').innerText,
+            document.getElementById('split5').innerText
+        ];
+
+        for (let row = 2; row <= 5; row++) {
+            let nuevaFila = [];
+            for (let i = 0; i < splits.length; i++) {
+                const newPosition = (i + mover) % splits.length;
+                nuevaFila[newPosition] = splits[i];
+            }
+            splits = nuevaFila;
+            for (let i = 0; i < splits.length; i++) {
+                document.getElementById(`split${i + 1}_${row}`).innerText = splits[i];
+            }
+        }
+    }
+
+    function limpiarOrden() {
+        const rows = 5;
+        for (let row = 1; row <= rows; row++) {
+            for (let i = 1; i <= 5; i++) {
+                const splitId = `split${i}${row > 1 ? `_${row}` : ''}`;
+                const elemento = document.getElementById(splitId);
+                if (elemento) {
+                    elemento.innerText = '';
+                }
+            }
+        }
+        document.getElementById('mensaje').innerText = '';
+    }
+</script>
+
+</body>
+</html>

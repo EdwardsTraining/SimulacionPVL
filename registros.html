@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registros de Scraps</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .logo {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 100px;
+        }
+        .barra-roja {
+            width: 100%;
+            height: 20px;
+            background-color: red;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button.limpiar {
+            background-color: red;
+            color: white;
+        }
+        button.volver {
+            background-color: blue;
+            color: white;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background: #f4f4f4;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+<div class="barra-roja"></div>
+<div class="container">
+    <img src="https://assets-us-01.kc-usercontent.com/6239a81e-8f0f-0040-a1df-b4932a10f6ae/82e279db-22f3-4714-9859-b395bd848835/edwards-OG.png" alt="Logo Edwards" class="logo">
+    <h1>Registros de Scraps</h1>
+    <ul id="scrapList"></ul>
+    <button class="limpiar" id="limpiarRegistros">Limpiar</button>
+    <button class="volver" id="volverInicio">Volver</button>
+</div>
+
+<script>
+    const scrapList = document.getElementById('scrapList');
+    const scraps = JSON.parse(localStorage.getItem('scraps')) || [];
+
+    // Mostrar los scraps guardados al cargar la página
+    window.onload = function() {
+        mostrarRegistros();
+    }
+
+    function mostrarRegistros() {
+        scrapList.innerHTML = '';
+        if (scraps.length === 0) {
+            const li = document.createElement('li');
+            li.textContent = "No hay registros de scraps.";
+            scrapList.appendChild(li);
+        } else {
+            scraps.forEach(scrap => {
+                const li = document.createElement('li');
+                li.textContent = `Empleado: ${scrap.empleado}, Size: ${scrap.size}, Defecto: ${scrap.defecto}, Ubicación: ${scrap.ubicacion}`;
+                scrapList.appendChild(li);
+            });
+        }
+    }
+
+    // Botón para limpiar registros
+    document.getElementById('limpiarRegistros').onclick = function() {
+        localStorage.removeItem('scraps');
+        scrapList.innerHTML = ''; // Limpiar la lista en la pantalla
+        mostrarRegistros();
+        alert('Registros eliminados exitosamente!');
+    }
+
+    // Botón para volver al inicio
+    document.getElementById('volverInicio').onclick = function() {
+        location.href = 'inicio.html'; // Volver al inicio
+    }
+</script>
+
+</body>
+</html>
